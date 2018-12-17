@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DetailsWeatherCell" id="gTV-IL-0wX" customClass="DetailsWeatherCell" customModule="WeatherApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="139" height="161"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="139" height="161"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lFZ-O7-cZ0" customClass="IconImageView" customModule="WeatherApp" customModuleProvider="target">
+                        <rect key="frame" x="40" y="4" width="59" height="55"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="59" id="7Gy-Zf-qvq"/>
+                            <constraint firstAttribute="height" constant="55" id="7k2-tn-F5R"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pvi-U1-eSR">
+                        <rect key="frame" x="16" y="74" width="107" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="Oo1-mw-eAn"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="nqG-Xn-f7g"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.19755993150684931" colorSpace="custom" customColorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Pvi-U1-eSR" secondAttribute="trailing" constant="16" id="90u-oh-lCA"/>
+                <constraint firstItem="Pvi-U1-eSR" firstAttribute="top" secondItem="lFZ-O7-cZ0" secondAttribute="bottom" constant="15" id="A3q-2P-Zzf"/>
+                <constraint firstItem="lFZ-O7-cZ0" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="TbM-Rl-6I6"/>
+                <constraint firstItem="Pvi-U1-eSR" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="bAc-Cr-8zN"/>
+                <constraint firstItem="lFZ-O7-cZ0" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="4" id="sqQ-eK-beK"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <size key="customSize" width="139" height="201"/>
+            <connections>
+                <outlet property="descriptionLabel" destination="Pvi-U1-eSR" id="Ity-vm-lfj"/>
+                <outlet property="iconImageView" destination="lFZ-O7-cZ0" id="jlz-U3-C46"/>
+            </connections>
+            <point key="canvasLocation" x="-149.59999999999999" y="-56.221889055472268"/>
+        </collectionViewCell>
+    </objects>
+</document>

@@ -1,6 +1,6 @@
 //
 //  Constants.swift
-//  Weather
+//  WeatherApp
 //
 //  Created by Tarasenko Jurik on 12/17/18.
 //  Copyright © 2018 Next Level. All rights reserved.
@@ -10,15 +10,15 @@ import UIKit
 import CoreData
 
 final class DataBaseService {
+    
     static let shared = DataBaseService()
     private init() {}
     
    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
    private lazy var context = appDelegate.persistentContainer.viewContext
     
-    //MARK: Clear All!
+    //Clear All!
     func clearDataInEntity(_ entityName: EntityName) {
-
             do {
                 let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName.rawValue)
                 let objects = try context.fetch(fetchRequest) as? [NSManagedObject]
@@ -51,7 +51,7 @@ final class DataBaseService {
         }
     }
     
-    //MARK: Featch
+    //Featch
     func fetchCoreData(entityName: EntityName) -> Any? {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName.rawValue)
@@ -66,7 +66,7 @@ final class DataBaseService {
         return nil
     }
     
-    //MARK: Save
+    //Save
     func saveSelectCity(_ city: SearchCityModel, forEntityName: EntityName) {
 
         if let object = NSEntityDescription.insertNewObject(forEntityName: forEntityName.rawValue, into: context) as? City {

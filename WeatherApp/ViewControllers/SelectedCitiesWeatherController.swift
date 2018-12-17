@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  Weather
+//  WeatherApp
 //
 //  Created by Tarasenko Jurik on 12/17/18.
 //  Copyright © 2018 Next Level. All rights reserved.
@@ -24,16 +24,38 @@ final class SelectedCitiesWeatherController: UIViewController {
         super.viewDidLoad()
         getCitiesFromCD()
         setupViews()
+        refresh()
+        checkInternet()
     }
     
     //MARK: Func
+    private func checkInternet() {
+        if !Reachability.isConnectedToNetwork() {
+            self.showAlert(title: "Internet?", msg: "Please check your internet connection and refrech")
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let controller = segue.destination as? SearchCityViewController {
             controller.delegat = self
         }
     }
     
+    private var refresher: UIRefreshControl!
+    private func refresh() {
+        refresher = UIRefreshControl()
+        selectedCitiesCollectionView.alwaysBounceVertical = true
+        refresher.addTarget(self, action: #selector(refreshLoad), for: .valueChanged)
+        selectedCitiesCollectionView.addSubview(refresher)
+    }
+    @objc private func refreshLoad()  {
+        
+        getCitiesFromCD()
+        refresher.endRefreshing()
+    }
+    
     private func getCitiesFromCD() {
+        cities.removeAll()
         guard let cities = DataBaseService.shared.fetchCoreData(entityName: .city) as? [City] else { return }
         for city in cities {
             let model = SearchCityModel(name: city.name, country: city.country, lat: city.lat, lng: city.lng)
@@ -80,10 +102,12 @@ final class SelectedCitiesWeatherController: UIViewController {
                                         lat: String(ConstantValues.DefaultCityLocation.kiev.lat!),
                                         lng: String(ConstantValues.DefaultCityLocation.kiev.lon!))
             setWeatherValuesFrom(kiev)
+            DataBaseService.shared.saveSelectCity(kiev, forEntityName: .city)
             let oddesa = SearchCityModel(name: nil, country: nil,
                                          lat: String(ConstantValues.DefaultCityLocation.odessa.lat!),
                                          lng: String(ConstantValues.DefaultCityLocation.odessa.lon!))
             setWeatherValuesFrom(oddesa)
+             DataBaseService.shared.saveSelectCity(oddesa, forEntityName: .city)
         }
     }
 }

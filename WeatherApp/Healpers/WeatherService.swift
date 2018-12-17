@@ -1,6 +1,6 @@
 //
 //  WeatherController.swift
-//  Weather
+//  WeatherApp
 //
 //  Created by Tarasenko Jurik on 12/17/18.
 //  Copyright © 2018 Next Level. All rights reserved.

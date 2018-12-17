@@ -8,7 +8,7 @@
 
 import UIKit
 
-class IconImageView: UIImageView {
+final class IconImageView: UIImageView {
 
     var iconId: String? {
         didSet {
@@ -26,8 +26,6 @@ class IconImageView: UIImageView {
                 self.tintColor = .white
             default: break
             }
-
         }
     }
-
 }

@@ -16,8 +16,9 @@ protocol SelectCityProtocol: class {
 final class SelectedCitiesWeatherController: UIViewController {
     
     @IBOutlet private weak var selectedCitiesCollectionView: UICollectionView!
+    @IBOutlet private weak var spiner: UIActivityIndicatorView!
     
-     var cities: [CityModel] = []
+    var cities: [CityModel] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,27 +42,51 @@ final class SelectedCitiesWeatherController: UIViewController {
     }
 
     private func setWeatherValuesFrom(_ model: SearchCityModel) {
-        guard let lat = Double(model.lat ?? ""), let lon = Double(model.lng ?? "") else { print("cord?"); return }
+        guard let lat = Double(model.lat ?? ""),
+            let lon = Double(model.lng ?? "") else { return }
+        
         let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
         
-        WeatherService.shared.weather(coordinate: coordinate, completion: { weatherResult in
+        WeatherService.shared.weather(coordinate: coordinate, completion: { [weak self] weatherResult in
+            
             switch weatherResult {
-            case .success(let model): self.cities.append(model)
+            case .success(let model): self?.cities.append(model)
             case .failure(let error): print("error: \(error)")
             }
             
             DispatchQueue.main.async {
-                self.selectedCitiesCollectionView.reloadData()
+                self?.selectedCitiesCollectionView.reloadData()
+                self?.spiner.stopAnimating()
             }
         })
     }
     
-    private func setupViews() {
-        self.view.backgroundColor = UIColor.weatherGrayBlack
+   private func isAppAlreadyLaunchedOnce() -> Bool {
+        let defaults = UserDefaults.standard
+        
+        if defaults.string(forKey: "isAppAlreadyLaunchedOnce") != nil {
+            return true
+        } else {
+            defaults.set(true, forKey: "isAppAlreadyLaunchedOnce")
+            return false
+        }
     }
     
-    
-} //end
+    private func setupViews() {
+        view.backgroundColor = UIColor.weatherGrayBlack
+        spiner.startAnimating()
+        if !isAppAlreadyLaunchedOnce() {
+            let kiev = SearchCityModel(name: nil, country: nil,
+                                        lat: String(ConstantValues.DefaultCityLocation.kiev.lat!),
+                                        lng: String(ConstantValues.DefaultCityLocation.kiev.lon!))
+            setWeatherValuesFrom(kiev)
+            let oddesa = SearchCityModel(name: nil, country: nil,
+                                         lat: String(ConstantValues.DefaultCityLocation.odessa.lat!),
+                                         lng: String(ConstantValues.DefaultCityLocation.odessa.lon!))
+            setWeatherValuesFrom(oddesa)
+        }
+    }
+}
 
 extension SelectedCitiesWeatherController: UIGestureRecognizerDelegate {}
 
@@ -90,10 +115,10 @@ extension SelectedCitiesWeatherController: UICollectionViewDelegate, UICollectio
         let cellSize = view.frame.width / 3 - 10
         return CGSize(width: cellSize, height: cellSize)
     }
-    
 }
 
 extension SelectedCitiesWeatherController: SelectCityProtocol {
+    
     func add(_ model: SearchCityModel) {
         setWeatherValuesFrom(model)
         DataBaseService.shared.saveSelectCity(model, forEntityName: .city)
@@ -105,8 +130,7 @@ extension SelectedCitiesWeatherController: SelectCityCellProtocol {
     
     func deleate(_ indexPath: IndexPath?) {
         if let index = indexPath?.item {
-            guard index < cities.count else { return }
-            let city = cities[index]  //TODO: Deleate from CD!
+            DataBaseService.shared.clearAtIndex(index, entityNames: .city)
             cities.remove(at: index)
             selectedCitiesCollectionView.reloadData()
         }

@@ -13,11 +13,14 @@
         <!--Cities-->
         <scene sceneID="2kA-mh-SNh">
             <objects>
-                <viewController restorationIdentifier="SelectedCitiesWeatherController" storyboardIdentifier="SelectedCitiesWeatherController" id="HTA-PN-usW" customClass="SelectedCitiesWeatherController" customModule="Weather" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="SelectedCitiesWeatherController" storyboardIdentifier="SelectedCitiesWeatherController" id="HTA-PN-usW" customClass="SelectedCitiesWeatherController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aMV-es-PQr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gz3-TE-Ajj">
+                                <rect key="frame" x="169" y="283" width="37" height="37"/>
+                            </activityIndicatorView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5Ck-LD-izF">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -28,14 +31,14 @@
                                     <inset key="sectionInset" minX="5" minY="5" maxX="5" maxY="5"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="SelectCityCell" id="Vem-b6-TZj" customClass="SelectCityCell" customModule="Weather" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="SelectCityCell" id="Vem-b6-TZj" customClass="SelectCityCell" customModule="WeatherApp" customModuleProvider="target">
                                         <rect key="frame" x="5" y="5" width="115" height="115"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="115" height="115"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image" translatesAutoresizingMaskIntoConstraints="NO" id="SGZ-hT-HqO">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image" translatesAutoresizingMaskIntoConstraints="NO" id="SGZ-hT-HqO" customClass="IconImageView" customModule="WeatherApp" customModuleProvider="target">
                                                     <rect key="frame" x="22.5" y="0.0" width="70" height="52"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="8K5-6N-rZ5"/>
@@ -108,8 +111,10 @@
                         <color key="backgroundColor" red="0.1215686275" green="0.14117647059999999" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="5Ck-LD-izF" firstAttribute="top" secondItem="XBj-Ob-30I" secondAttribute="top" id="KGf-R8-J1k"/>
+                            <constraint firstItem="gz3-TE-Ajj" firstAttribute="centerY" secondItem="XBj-Ob-30I" secondAttribute="centerY" id="Nic-cI-Svu"/>
                             <constraint firstItem="XBj-Ob-30I" firstAttribute="bottom" secondItem="5Ck-LD-izF" secondAttribute="bottom" id="Yhh-QC-Yon"/>
                             <constraint firstItem="5Ck-LD-izF" firstAttribute="leading" secondItem="XBj-Ob-30I" secondAttribute="leading" id="dAa-zh-9wc"/>
+                            <constraint firstItem="gz3-TE-Ajj" firstAttribute="centerX" secondItem="XBj-Ob-30I" secondAttribute="centerX" id="ui0-kT-Nsr"/>
                             <constraint firstItem="XBj-Ob-30I" firstAttribute="trailing" secondItem="5Ck-LD-izF" secondAttribute="trailing" id="ymP-mL-MdJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="XBj-Ob-30I"/>
@@ -127,6 +132,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="selectedCitiesCollectionView" destination="5Ck-LD-izF" id="6RL-ch-Xz4"/>
+                        <outlet property="spiner" destination="gz3-TE-Ajj" id="q9E-0a-Vyn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fJC-j6-Qkg" sceneMemberID="firstResponder"/>
@@ -136,7 +142,7 @@
         <!--Search City View Controller-->
         <scene sceneID="JJm-fC-tGs">
             <objects>
-                <viewController restorationIdentifier="SearchCityViewController" storyboardIdentifier="SearchCityViewController" id="D1x-wH-eA7" customClass="SearchCityViewController" customModule="Weather" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="SearchCityViewController" storyboardIdentifier="SearchCityViewController" id="D1x-wH-eA7" customClass="SearchCityViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="z07-b9-xAb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -157,7 +163,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CityCell" id="HDJ-7s-jE8" customClass="CityCell" customModule="Weather" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CityCell" id="HDJ-7s-jE8" customClass="CityCell" customModule="WeatherApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HDJ-7s-jE8" id="AE5-zH-1xq">
@@ -217,7 +223,7 @@
         <!--City Detailed Weather View Controller-->
         <scene sceneID="M9w-CM-G7D">
             <objects>
-                <viewController restorationIdentifier="CityDetailedWeatherViewController" storyboardIdentifier="CityDetailedWeatherViewController" id="sXg-hr-fot" customClass="CityDetailedWeatherViewController" customModule="Weather" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="CityDetailedWeatherViewController" storyboardIdentifier="CityDetailedWeatherViewController" id="sXg-hr-fot" customClass="CityDetailedWeatherViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jj3-cg-ZhH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -31,25 +31,25 @@ final class DataBaseService {
         
     }
     
-    //MARK: Contains
-//    func isUniqeName(entityName: String, uidName: String , uid: String) -> Bool {
-//
-//        let myRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-//        myRequest.predicate = NSPredicate(format: "\(uidName) = %@", uid)
-//
-//        do {
-//            let results = try context.fetch(myRequest)
-//             assert(results.count < 2)
-//            if results.count > 0 {
-//                return false
-//            } else {
-//                return true
-//            }
-//        } catch let error {
-//            print(error)
-//        }
-//        return false
-//    }
+    //Deleate
+    func clearAtIndex(_ index: Int, entityNames: EntityName) {
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+
+        if let context = delegate?.persistentContainer.viewContext {
+            
+            do {
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityNames.rawValue)
+                    var objects = try context.fetch(fetchRequest) as? [NSManagedObject]
+                    guard let count = objects?.count else { return }
+                    guard count > index else { return }
+                    if let obj = objects?.remove(at: index) {
+                        context.delete(obj)
+                    }
+                
+                try context.save()
+            } catch let err { print(err) }
+        }
+    }
     
     //MARK: Featch
     func fetchCoreData(entityName: EntityName) -> Any? {
@@ -66,27 +66,7 @@ final class DataBaseService {
         return nil
     }
     
-//    func getDataBy(_ entityName: String, uidValueInCD: String, completion: @escaping ([String : Any]?) -> ()) {
-//
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-//        let predicate = NSPredicate(format: "\(uidValueInCD) = %@", uidValueInCD)
-//        fetchRequest.predicate = predicate
-//
-//        do {
-//            let profiles = try context.fetch(fetchRequest)
-//            assert(profiles.count < 2) // we shouldn't have any duplicates in CD
-//
-//            if let objectArray = profiles.first as? NSManagedObject  {
-//                completion(convertToJSONArray([objectArray])?.first)
-//            } else {
-//                // no local cache
-//            }
-//        } catch let error {
-//            print(error)
-//        }
-//    }
-    
-    //MARK: SaveValueForKeys
+    //MARK: Save
     func saveSelectCity(_ city: SearchCityModel, forEntityName: EntityName) {
 
         if let object = NSEntityDescription.insertNewObject(forEntityName: forEntityName.rawValue, into: context) as? City {
@@ -97,26 +77,4 @@ final class DataBaseService {
             appDelegate.saveContext()
         }
     }
-}
-
-//MARK: convertToJSONArray
-extension DataBaseService {
-    
-//    private func convertToJSONArray(_ moArray: [NSManagedObject]) -> [[String: Any]]? {
-//
-//        if moArray.isEmpty { return nil }
-//        var jsonArray: [[String: Any]] = []
-//
-//        for item in moArray {
-//            var dict = [String: Any]()
-//
-//            for attribute in item.entity.attributesByName {
-//                if let value = item.value(forKey: attribute.key) {
-//                    dict[attribute.key] = value
-//                }
-//            }
-//            jsonArray.append(dict)
-//        }
-//        return jsonArray
-//    }
 }

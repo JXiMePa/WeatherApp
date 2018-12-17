@@ -52,10 +52,6 @@ final class CityDetailedWeatherViewController: UIViewController {
 
 extension CityDetailedWeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.item) //TODO: !?
-    }
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return city?.weather?.count ?? 0
     }

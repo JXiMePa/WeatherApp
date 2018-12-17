@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 import CoreLocation
 
-
 final class SearchCityViewController: UIViewController {
     
     @IBOutlet private weak var cityTableView: UITableView!
@@ -25,26 +24,28 @@ final class SearchCityViewController: UIViewController {
         }
     }
     
-    private var cities = [[SearchCityModel]]() {
-        didSet {
-            cityTableView.reloadData()
-            searchCities = cities
-        }
-    }
-    
-    private var searchCities = [[SearchCityModel]]() {
-        didSet {
-            cityTableView.reloadData()
-        }
-    }
-
     private var cityArray: [SearchCityModel] = [] {
         didSet {
             cities = self.sort(cityArray)
         }
     }
     
-    private var searchСities = [CityModel]()
+    private var cities = [[SearchCityModel]]() {
+        didSet {
+            cityTableView.reloadData()
+        }
+    }
+
+    private var searchCities = [SearchCityModel]() {
+        didSet {
+            cityTableView.reloadData()
+        }
+    }
+    private var isSearch: Bool {
+        get {
+            return searchCities.count > 0
+        }
+    }
     
     weak var delegat: SelectCityProtocol!
     
@@ -56,8 +57,7 @@ final class SearchCityViewController: UIViewController {
     }
     
     private func getCurentArray() -> [[SearchCityModel]] {
-        
-        return searchCities.isEmpty ? cities : searchCities
+        return searchCities.isEmpty ? cities : [searchCities]
     }
     
     private func getFirstCharIndex(_ char: Character?) -> Int? {
@@ -98,16 +98,15 @@ final class SearchCityViewController: UIViewController {
     
     private func endOfSearch() {
         
-        searchСities.removeAll()
+        searchCities.removeAll()
         cityTableView?.reloadData()
     }
 
     private func getCities() {
         
         spiner.startAnimating()
-        
         DispatchQueue.main.async {
-            if let path = Bundle.main.path(forResource: "cities", ofType: "json") {
+            if let path = Bundle.main.path(forResource: "citiesL", ofType: "json") {
                 do {
                     let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .dataReadingMapped)
                     self.cityArray = try JSONDecoder().decode([SearchCityModel].self, from: data)
@@ -137,38 +136,53 @@ extension SearchCityViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
      func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if isSearch {
+            guard let char = searchBar.text?.first else { return nil }
+            return String(char)
+        }
+        
         let index = asciiUppercase.index(asciiUppercase.startIndex, offsetBy: section)
         return String(asciiUppercase[index])
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        if isSearch {
+            return 1
+        }
         return asciiUppercase.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isSearch {
+            return searchCities.count
+        }
         let count = cities.count > 0 ? cities[section].count : 0
         return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = cityTableView.dequeueReusableCell(withIdentifier: CityCell.identifier, for: indexPath) as! CityCell
-        let curentModelArray = getCurentArray().count > 0 ? getCurentArray()[indexPath.section]: nil
         
-        if let model = curentModelArray {
-        cell.model = model[indexPath.row]
+        if isSearch {
+            cell.model = searchCities[indexPath.row]
+            return cell
         }
+        cell.model = getCurentArray()[indexPath.section][indexPath.row]
         return cell
     }
 }
 
 extension SearchCityViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if let index = getFirstCharIndex(searchText.first) {
-        searchCities = [cities[index]]
-        } else {
-            searchCities.removeAll()
-        }
+        guard let index = getFirstCharIndex(searchText.first) else { return }
         
+        if searchText == "" {
+            searchCities.removeAll()
+        } else if searchText.count == 1 {
+        searchCities = cities[index]
+        } else {
+            searchCities = cities[index].filter { $0.name?.contains(searchText) ?? false }
+        }
     }
     
     
